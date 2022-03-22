@@ -19,7 +19,7 @@ class Random extends Gen {
   }
 
   @override
-  String buildVariant(int i) {
+  String? buildVariant(int i) {
     int depth = 1;
     for (final element in possibilities) {
       depth += element.getDepth();
@@ -28,7 +28,7 @@ class Random extends Gen {
         return element.buildVariant(i - depth);
       }
     }
-    return "out of range";
+    return null;
   }
 
   @override

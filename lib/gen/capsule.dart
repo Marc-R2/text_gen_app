@@ -23,11 +23,13 @@ class Capsule extends Gen {
   String toString() => 'Capsule(${getDepth()})$encapsulated';
 
   @override
-  String buildVariant(i) {
+  String? buildVariant(i) {
+    if(i > getDepth()) return null;
     final buffer = StringBuffer();
     int depth = 1;
     for (final element in encapsulated) {
-      if(element is Txt) buffer.write('${element.buildVariant(i - depth)} ');
+      if(buffer.isNotEmpty) buffer.write(' ');
+      if(element is Txt) buffer.write(element.buildVariant(i - depth));
       if(element is Random) buffer.write(element.buildVariant(i - depth));
       if(element is Capsule) buffer.write(element.buildVariant(i - depth));
       depth *= element.getDepth();

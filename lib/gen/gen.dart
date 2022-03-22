@@ -10,7 +10,7 @@ abstract class Gen {
 
   String buildArguments();
 
-  String buildVariant(int i);
+  String? buildVariant(int i);
 
   int getDepth();
 }
