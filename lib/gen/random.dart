@@ -22,10 +22,11 @@ class Random extends Gen {
   String? buildVariant(int i) {
     int depth = 0;
     for (final element in possibilities) {
-      depth += element.getDepth();
+      final lDepth = element.getDepth();
+      depth += lDepth;
       if(depth > i) {
-        print('var($i): $this => ${element.buildVariant(i - depth)}');
-        return element.buildVariant(i - depth);
+        // print('var($i): $this => ${element.buildVariant(i % lDepth)}');
+        return element.buildVariant(i % lDepth);
       }
     }
     return null;

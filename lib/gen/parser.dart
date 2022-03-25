@@ -6,7 +6,7 @@ Gen? parse(String txt) {
   Gen? current;
   List<Gen> stack = [];
   for (String i in chars) {
-    print('i is: $i');
+    // print('i is: $i');
     if (i == ' ') {
       if (current is Txt) {
         final tmp = stack.last;

@@ -48,37 +48,35 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextField(
-                controller: _controller,
-                onChanged: (_) => setState(() {
-                  parsed = parse(_controller.text);
-                  if(parsed != null) txt = parsed!.buildArguments();
-                }),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextField(
+              controller: _controller,
+              onChanged: (_) => setState(() {
+                parsed = parse(_controller.text);
+                if (parsed != null) txt = parsed!.buildArguments();
+              }),
+            ),
+            const SizedBox(height: 32),
+            Text(_controller.text),
+            const SizedBox(height: 32),
+            Text(txt ?? "Error"),
+            Expanded(
+              child: ListView.builder(
+                itemCount: parsed == null ? 1 : parsed!.getDepth() + 1,
+                itemBuilder: (context, index) {
+                  if (parsed == null) return const Text("No valid Input");
+                  return ListTile(
+                    title: SelectableText(parsed == null ? "Error" : parsed!.buildVariant(index) ?? 'out of range'),
+                  );
+                },
               ),
-              const SizedBox(height: 32),
-              Text(_controller.text),
-              const SizedBox(height: 32),
-              Text(txt ?? "Error"),
-              const SizedBox(height: 32),
-              Text(parsed == null ? "Error" : parsed!.buildVariant(1) ?? 'out of range'),
-              const SizedBox(height: 32),
-              Text(parsed == null ? "Error" : parsed!.buildVariant(2) ?? 'out of range'),
-              const SizedBox(height: 32),
-              Text(parsed == null ? "Error" : parsed!.buildVariant(3) ?? 'out of range'),
-              const SizedBox(height: 32),
-              Text(parsed == null ? "Error" : parsed!.buildVariant(4) ?? 'out of range'),
-              const SizedBox(height: 32),
-              Text(parsed == null ? "Error" : parsed!.buildVariant(5) ?? 'out of range'),
-              const SizedBox(height: 32),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

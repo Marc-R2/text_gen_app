@@ -10,7 +10,7 @@ class Capsule extends Gen {
 
   @override
   String buildArguments() {
-    print(this);
+    // print(this);
     final buffer = StringBuffer();
     for (final element in encapsulated) {
       if (buffer.isNotEmpty) buffer.write(' ');
@@ -23,6 +23,7 @@ class Capsule extends Gen {
   String toString() => 'Capsule(${getDepth()})$encapsulated';
 
   @override
+
   /// Builds the ith variant of the encapsulated Gen and its children.
   String? buildVariant(i) {
     if (i >= getDepth()) return null;
@@ -30,19 +31,19 @@ class Capsule extends Gen {
 
     for (final element in encapsulated) {
       if (buffer.isNotEmpty) buffer.write(' ');
+      final depth = element.getDepth();
       if (element is Txt) {
         buffer.write(element.buildVariant(1));
       } else if (element is Capsule) {
-        buffer.write(element.buildVariant(i));
-        i -= element.getDepth();
+        buffer.write(element.buildVariant(i % depth));
+        i ~/= element.getDepth();
       } else if (element is Random) {
-        final depth = element.getDepth();
-        int index = i % depth;
+        int index = (i % depth);
         buffer.write(element.buildVariant(index));
-        i = (i ~/ depth);
+        i ~/= depth;
       }
     }
-    print('var($i): $this => $buffer');
+    // print('var($i): $this => $buffer');
     return buffer.toString();
   }
 
