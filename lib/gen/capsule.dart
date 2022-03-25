@@ -23,16 +23,24 @@ class Capsule extends Gen {
   String toString() => 'Capsule(${getDepth()})$encapsulated';
 
   @override
+  /// Builds the ith variant of the encapsulated Gen and its children.
   String? buildVariant(i) {
-    if (i > getDepth()) return null;
+    if (i >= getDepth()) return null;
     final buffer = StringBuffer();
-    int depth = 1;
+
     for (final element in encapsulated) {
       if (buffer.isNotEmpty) buffer.write(' ');
-      if (element is Txt) buffer.write(element.buildVariant(i - depth));
-      if (element is Random) buffer.write(element.buildVariant(i - depth));
-      if (element is Capsule) buffer.write(element.buildVariant(i - depth));
-      depth *= element.getDepth();
+      if (element is Txt) {
+        buffer.write(element.buildVariant(1));
+      } else if (element is Capsule) {
+        buffer.write(element.buildVariant(i));
+        i -= element.getDepth();
+      } else if (element is Random) {
+        final depth = element.getDepth();
+        int index = i % depth;
+        buffer.write(element.buildVariant(index));
+        i = (i ~/ depth);
+      }
     }
     print('var($i): $this => $buffer');
     return buffer.toString();
@@ -42,7 +50,7 @@ class Capsule extends Gen {
   /// [lists] is the list of lists
   /// [i] is the index of the current list
   /// [n] is the number of the wanted permutation
-  static List<String> permutation(int n, List<List<String>> lists, [int i = 0]) {
+  static List<T> permutation<T>(int n, List<List<T>> lists, [int i = 0]) {
     if (i == lists.length) return [];
     final list = lists[i];
     final length = list.length;

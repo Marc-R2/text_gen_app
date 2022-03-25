@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:text_gen/gen/gen.dart';
 
-import 'package:text_gen/main.dart';
-
 void main() {
   group('Random - Simple', () {
     late Random rand;
@@ -17,10 +15,10 @@ void main() {
 
     test('Depth', () => expect(rand.getDepth(), 3));
 
-    test('Random(1) => ABC', () => expect(rand.buildVariant(1), 'ABC'));
-    test('Random(2) => DEF', () => expect(rand.buildVariant(2), 'DEF'));
-    test('Random(3) => HIJ', () => expect(rand.buildVariant(3), 'HIJ'));
-    test('Random(4) => null', () => expect(rand.buildVariant(4), null));
+    test('Random(0) => ABC', () => expect(rand.buildVariant(0), 'ABC'));
+    test('Random(1) => DEF', () => expect(rand.buildVariant(1), 'DEF'));
+    test('Random(2) => HIJ', () => expect(rand.buildVariant(2), 'HIJ'));
+    test('Random(3) => null', () => expect(rand.buildVariant(3), null));
   });
 
   group('Capsule - Simple', () {
@@ -36,10 +34,10 @@ void main() {
 
     test('Depth', () => expect(cap.getDepth(), 1));
 
-    test('Random(1) => ABC', () => expect(cap.buildVariant(1), 'ABC DEF HIJ'));
+    test('Random(0) => ABC', () => expect(cap.buildVariant(0), 'ABC DEF HIJ'));
+    test('Random(1) => null', () => expect(cap.buildVariant(1), null));
     test('Random(2) => null', () => expect(cap.buildVariant(2), null));
     test('Random(3) => null', () => expect(cap.buildVariant(3), null));
-    test('Random(4) => null', () => expect(cap.buildVariant(4), null));
   });
 
   group('Capsule(Txt Random(3) Txt)', () {
@@ -59,10 +57,76 @@ void main() {
 
     test('Depth', () => expect(cap.getDepth(), 3));
 
-    test('Random(1)', () => expect(cap.buildVariant(1), 'ABC AB HIJ'));
-    test('Random(2)', () => expect(cap.buildVariant(2), 'ABC CD HIJ'));
-    test('Random(3)', () => expect(cap.buildVariant(3), 'ABC EF HIJ'));
-    test('Random(4) => null', () => expect(cap.buildVariant(4), null));
+    test('Capsule(Txt Random(3) Txt)(0)', () => expect(cap.buildVariant(0), 'ABC AB HIJ'));
+    test('Capsule(Txt Random(3) Txt)(1)', () => expect(cap.buildVariant(1), 'ABC CD HIJ'));
+    test('Capsule(Txt Random(3) Txt)(2)', () => expect(cap.buildVariant(2), 'ABC EF HIJ'));
+    test('Capsule(Txt Random(3) Txt)(3) => null', () => expect(cap.buildVariant(3), null));
+  });
+
+  group('Capsule(Random(3) Random(3))', () {
+    late Capsule cap;
+
+    setUpAll(() {
+      cap = Capsule(encapsulated: [
+        Random(possibilities: [
+          Txt(text: 'AB'),
+          Txt(text: 'CD'),
+          Txt(text: 'EF'),
+        ]),
+        Random(possibilities: [
+          Txt(text: 'GH'),
+          Txt(text: 'IJ'),
+          Txt(text: 'KL'),
+        ]),
+      ]);
+    });
+
+    test('Depth', () => expect(cap.getDepth(), 9));
+
+    test('Capsule(Random(3) Random(3))(0)', () => expect(cap.buildVariant(0), 'AB GH'));
+    test('Capsule(Random(3) Random(3))(1)', () => expect(cap.buildVariant(1), 'CD GH'));
+    test('Capsule(Random(3) Random(3))(2)', () => expect(cap.buildVariant(2), 'EF GH'));
+    test('Capsule(Random(3) Random(3))(3)', () => expect(cap.buildVariant(3), 'AB IJ'));
+    test('Capsule(Random(3) Random(3))(4)', () => expect(cap.buildVariant(4), 'CD IJ'));
+    test('Capsule(Random(3) Random(3))(5)', () => expect(cap.buildVariant(5), 'EF IJ'));
+    test('Capsule(Random(3) Random(3))(6)', () => expect(cap.buildVariant(6), 'AB KL'));
+    test('Capsule(Random(3) Random(3))(7)', () => expect(cap.buildVariant(7), 'CD KL'));
+    test('Capsule(Random(3) Random(3))(8)', () => expect(cap.buildVariant(8), 'EF KL'));
+    test('Capsule(Random(3) Random(3))(9) => null', () => expect(cap.buildVariant(9), null));
+  });
+
+  group('Capsule(Txt Random(3) Random(3) Txt)', () {
+    late Capsule cap;
+
+    setUpAll(() {
+      cap = Capsule(encapsulated: [
+        Txt(text: 'ABC'),
+        Random(possibilities: [
+          Txt(text: 'AB'),
+          Txt(text: 'CD'),
+          Txt(text: 'EF'),
+        ]),
+        Random(possibilities: [
+          Txt(text: 'GH'),
+          Txt(text: 'IJ'),
+          Txt(text: 'KL'),
+        ]),
+        Txt(text: 'HIJ'),
+      ]);
+    });
+
+    test('Depth', () => expect(cap.getDepth(), 9));
+
+    test('Capsule(Txt Random(3) Random(3) Txt)(0)', () => expect(cap.buildVariant(0), 'ABC AB GH HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(1)', () => expect(cap.buildVariant(1), 'ABC CD GH HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(2)', () => expect(cap.buildVariant(2), 'ABC EF GH HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(3)', () => expect(cap.buildVariant(3), 'ABC AB IJ HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(4)', () => expect(cap.buildVariant(4), 'ABC CD IJ HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(5)', () => expect(cap.buildVariant(5), 'ABC EF IJ HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(6)', () => expect(cap.buildVariant(6), 'ABC AB KL HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(7)', () => expect(cap.buildVariant(7), 'ABC CD KL HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(8)', () => expect(cap.buildVariant(8), 'ABC EF KL HIJ'));
+    test('Capsule(Txt Random(3) Random(3) Txt)(9) => null', () => expect(cap.buildVariant(9), null));
   });
 
   /// Test the permutation function in the Capsule class

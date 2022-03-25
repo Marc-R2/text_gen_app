@@ -20,7 +20,7 @@ class Random extends Gen {
 
   @override
   String? buildVariant(int i) {
-    int depth = 1;
+    int depth = 0;
     for (final element in possibilities) {
       depth += element.getDepth();
       if(depth > i) {
