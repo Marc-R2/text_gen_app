@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:text_gen/gen/gen.dart';
-import 'package:text_gen/widgets/capsule_container.dart';
-import 'package:text_gen/widgets/random_container.dart';
-import 'package:text_gen/widgets/txt_container.dart';
+import 'package:text_gen/text_gen.dart';
+import 'package:text_gen_app/widgets/txt_container.dart';
+import 'package:text_gen_app/widgets/random_container.dart';
+import 'package:text_gen_app/widgets/capsule_container.dart';
 
 class GenContainer extends StatelessWidget {
   const GenContainer({

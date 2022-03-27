@@ -1,4 +1,4 @@
-name: text_gen
+name: text_gen_app
 description: Create text based on rules
 
 # The following line prevents the package from being accidentally published to
@@ -27,7 +27,10 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  uuid: 3.0.6
+  text_gen:
+    git:
+      url: https://github.com/Marc-R2/text_gen
+      branch: master
   flutter:
     sdk: flutter
 

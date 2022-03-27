@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:text_gen/gen/gen.dart';
+import 'package:text_gen/text_gen.dart';
 
 class TxtContainer extends StatefulWidget {
   const TxtContainer({
@@ -18,6 +18,14 @@ class TxtContainer extends StatefulWidget {
 }
 
 class _TxtContainerState extends State<TxtContainer> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.txt.text);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Container for the Txt with rounded corners in green
@@ -37,6 +45,22 @@ class _TxtContainerState extends State<TxtContainer> {
             color: Colors.white,
           ),
         ),
+        // SizedBox(
+        //           height: 20,
+        //           width: 64,
+        //           child: TextField(
+        //             expands: false,
+        //             controller: _controller,
+        //             onChanged: (value) {
+        //               widget.txt.text = value;
+        //             },
+        //             style: const TextStyle(
+        //               fontSize: 16,
+        //               //fontWeight: FontWeight.bold,
+        //               color: Colors.white,
+        //             ),
+        //           ),
+        //         ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:text_gen/gen/gen.dart';
-import 'package:text_gen/widgets/gen_container.dart';
+import 'package:text_gen/text_gen.dart';
+import 'package:text_gen_app/widgets/gen_container.dart';
 
 class SubTree extends StatefulWidget {
   const SubTree({
@@ -18,6 +18,7 @@ class SubTree extends StatefulWidget {
 
 class _SubTreeState extends State<SubTree> {
   late TextEditingController _controller;
+  late ScrollController _scrollController;
 
   Gen? subGen;
 
@@ -25,6 +26,7 @@ class _SubTreeState extends State<SubTree> {
   void initState() {
     subGen = widget.sub;
     _controller = TextEditingController();
+    _scrollController = ScrollController();
     if (subGen != null) _controller.text = subGen!.buildArguments();
     super.initState();
   }
@@ -67,7 +69,7 @@ class _SubTreeState extends State<SubTree> {
                 child: TextField(
                   controller: _controller,
                   onChanged: (_) => setState(() {
-                    final newGen = parse(_controller.text);
+                    final newGen = GeneratedParser.parse(_controller.text);
                     if (newGen != null &&
                         widget.gen != null &&
                         subGen != null) {
@@ -99,6 +101,7 @@ class _SubTreeState extends State<SubTree> {
                 tag: 'GenTexts',
                 child: Material(
                   child: ListView.builder(
+                    controller: _scrollController,
                     itemCount: subGen == null ? 1 : subGen!.getDepth(),
                     itemBuilder: (context, index) {
                       if (subGen == null) return const Text("No valid Input");

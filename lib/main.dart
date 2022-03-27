@@ -1,7 +1,6 @@
-import 'package:text_gen/widgets/gen_container.dart';
-import 'package:text_gen/widgets/subtree.dart';
+import 'package:text_gen/text_gen.dart';
+import 'package:text_gen_app/widgets/subtree.dart';
 
-import 'gen/gen.dart';
 
 import 'package:flutter/material.dart';
 

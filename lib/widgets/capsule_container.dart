@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:text_gen/gen/gen.dart';
+import 'package:text_gen/text_gen.dart';
 
 import 'gen_container.dart';
 
