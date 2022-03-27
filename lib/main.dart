@@ -1,4 +1,5 @@
 import 'package:text_gen/widgets/gen_container.dart';
+import 'package:text_gen/widgets/subtree.dart';
 
 import 'gen/gen.dart';
 
@@ -46,47 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-              controller: _controller,
-              onChanged: (_) => setState(() {
-                parsed = parse(_controller.text);
-                if (parsed != null) txt = parsed!.buildArguments();
-              }),
-            ),
-            const SizedBox(height: 32),
-            //Text(txt ?? "Error"),
-            parsed != null
-                ? Expanded(
-                    child: SingleChildScrollView(
-                      child: GenContainer(
-                        gen: parsed!,
-                      ),
-                    ),
-                  )
-                : const SizedBox(),
-            // child: ListView.builder(
-            //                 itemCount: parsed == null ? 1 : parsed!.getDepth() + 1,
-            //                 itemBuilder: (context, index) {
-            //                   if (parsed == null) return const Text("No valid Input");
-            //                   return ListTile(
-            //                     title: SelectableText(parsed == null ? "Error" : parsed!.buildVariant(index) ?? 'out of range'),
-            //                   );
-            //                 },
-            //               ),
-            const SizedBox(height: 32),
-          ],
-        ),
-      ),
+    return const Scaffold(
+      body: SubTree(),
     );
   }
 }

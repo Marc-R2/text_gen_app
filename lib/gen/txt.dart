@@ -23,4 +23,19 @@ class Txt extends Gen {
 
   @override
   int getDepth() => 1;
+
+  @override
+  List<Gen>? getPathToUuid(String uuid) {
+    if (uuid == this.uuid) return [this];
+    return null;
+  }
+
+  @override
+  Gen? getByUuid(String uuid) {
+    if (uuid == this.uuid) return this;
+    return null;
+  }
+
+  @override
+  bool replaceByUuid(String uuid, Gen newGen) => false;
 }

@@ -69,4 +69,46 @@ class Capsule extends Gen {
     }
     return depth;
   }
+
+  @override
+  List<Gen>? getPathToUuid(String uuid) {
+    if(uuid == this.uuid) return [this];
+    for (final element in encapsulated) {
+      final path = element.getPathToUuid(uuid);
+      if (path != null) return [this, ...path];
+    }
+    return null;
+  }
+
+  @override
+  Gen? getByUuid(String uuid) {
+    Gen? res;
+    for (final element in encapsulated) {
+      if (element.uuid == uuid) {
+        res = element;
+        break;
+      } else {
+        final uuFound = element.getByUuid(uuid);
+        if (uuFound != null) {
+          res = uuFound;
+          break;
+        }
+      }
+    }
+    return res;
+  }
+
+  @override
+  bool replaceByUuid(String uuid, Gen newGen) {
+    for (final element in encapsulated) {
+      if (element.uuid == uuid) {
+        encapsulated[encapsulated.indexOf(element)] = newGen;
+        return true;
+      } else {
+        final uuFound = element.replaceByUuid(uuid, newGen);
+        if (uuFound) return true;
+      }
+    }
+    return false;
+  }
 }

@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:text_gen/gen/gen.dart';
 
 class TxtContainer extends StatefulWidget {
-  const TxtContainer({Key? key, required this.txt}) : super(key: key);
+  const TxtContainer({
+    Key? key,
+    required this.txt,
+    this.allowNavigate = true,
+    required this.navigateTo,
+  }) : super(key: key);
 
   final Txt txt;
+  final bool allowNavigate;
+  final Function(Gen) navigateTo;
 
   @override
   _TxtContainerState createState() => _TxtContainerState();

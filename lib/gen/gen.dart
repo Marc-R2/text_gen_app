@@ -32,7 +32,14 @@ abstract class Gen {
 
   int getDepth();
 
-  late final String? _uuid;
+  String? _uuid;
 
   String get uuid => _uuid ??= const Uuid().v4();
+
+  Gen? getByUuid(String uuid);
+
+  /// Replaces the existing element with [uuid] with [newGen].
+  bool replaceByUuid(String uuid, Gen newGen);
+
+  List<Gen>? getPathToUuid(String uuid);
 }

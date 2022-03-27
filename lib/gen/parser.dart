@@ -2,9 +2,14 @@ part of 'gen.dart';
 
 Gen? parse(String txt) {
   final chars = txt.split('');
-  if (chars.isEmpty || chars[0] != '(') return null;
+  if (chars.isEmpty) return null;
+
+  if(chars.first != '(') chars.insert(0, '(');
+  if(chars.last != ')') chars.add(')');
+
   Gen? current;
   List<Gen> stack = [];
+
   for (String i in chars) {
     // print('i is: $i');
     if (i == ' ') {
