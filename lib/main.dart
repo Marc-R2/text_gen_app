@@ -1,3 +1,5 @@
+import 'package:text_gen/widgets/gen_container.dart';
+
 import 'gen/gen.dart';
 
 import 'package:flutter/material.dart';
@@ -62,20 +64,26 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
             ),
             const SizedBox(height: 32),
-            Text(_controller.text),
+            //Text(txt ?? "Error"),
+            parsed != null
+                ? Expanded(
+                    child: SingleChildScrollView(
+                      child: GenContainer(
+                        gen: parsed!,
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
+            // child: ListView.builder(
+            //                 itemCount: parsed == null ? 1 : parsed!.getDepth() + 1,
+            //                 itemBuilder: (context, index) {
+            //                   if (parsed == null) return const Text("No valid Input");
+            //                   return ListTile(
+            //                     title: SelectableText(parsed == null ? "Error" : parsed!.buildVariant(index) ?? 'out of range'),
+            //                   );
+            //                 },
+            //               ),
             const SizedBox(height: 32),
-            Text(txt ?? "Error"),
-            Expanded(
-              child: ListView.builder(
-                itemCount: parsed == null ? 1 : parsed!.getDepth() + 1,
-                itemBuilder: (context, index) {
-                  if (parsed == null) return const Text("No valid Input");
-                  return ListTile(
-                    title: SelectableText(parsed == null ? "Error" : parsed!.buildVariant(index) ?? 'out of range'),
-                  );
-                },
-              ),
-            ),
           ],
         ),
       ),
