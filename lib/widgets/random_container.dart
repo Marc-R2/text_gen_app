@@ -47,11 +47,13 @@ class _RandomContainerState extends State<RandomContainer> {
           border: Border.all(color: Colors.red.shade500, width: 2),
         ),
         // A Column of GenContainer widgets for each of the random's possibilities children
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: widget.rand.possibilities.map((child) {
-            return GenContainer(gen: child, navigateTo: widget.navigateTo);
-          }).toList(),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: widget.rand.possibilities.map((child) {
+              return GenContainer(gen: child, navigateTo: widget.navigateTo);
+            }).toList(),
+          ),
         ),
       ),
     );

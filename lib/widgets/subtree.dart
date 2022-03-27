@@ -51,42 +51,64 @@ class _SubTreeState extends State<SubTree> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Display the path from widget.gen to subGen
-            GenPath(
-              gen: widget.gen,
-              sub: subGen,
-              navigateTo: navigateTo,
+            Hero(
+              tag: 'GenPath',
+              child: Material(
+                child: GenPath(
+                  gen: widget.gen,
+                  sub: subGen,
+                  navigateTo: navigateTo,
+                ),
+              ),
             ),
-            TextField(
-              controller: _controller,
-              onChanged: (_) => setState(() {
-                final newGen = parse(_controller.text);
-                if (newGen != null && widget.gen != null && subGen != null) {
-                  widget.gen!.replaceByUuid(subGen!.uuid, newGen);
-                }
-                subGen = newGen;
-              }),
+            Hero(
+              tag: 'GenTextField',
+              child: Material(
+                child: TextField(
+                  controller: _controller,
+                  onChanged: (_) => setState(() {
+                    final newGen = parse(_controller.text);
+                    if (newGen != null &&
+                        widget.gen != null &&
+                        subGen != null) {
+                      widget.gen!.replaceByUuid(subGen!.uuid, newGen);
+                    }
+                    subGen = newGen;
+                  }),
+                ),
+              ),
             ),
             const SizedBox(height: 32),
             subGen != null
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: GenContainer(
-                      gen: subGen!,
-                      allowNavigate: false,
-                      navigateTo: navigateTo,
+                ? Hero(
+                    tag: 'GenContainer',
+                    child: Material(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: GenContainer(
+                          gen: subGen!,
+                          allowNavigate: false,
+                          navigateTo: navigateTo,
+                        ),
+                      ),
                     ),
                   )
                 : const SizedBox(),
             Expanded(
-              child: ListView.builder(
-                itemCount: subGen == null ? 1 : subGen!.getDepth(),
-                itemBuilder: (context, index) {
-                  if (subGen == null) return const Text("No valid Input");
-                  return ListTile(
-                    title: SelectableText(
-                        '${index + 1}: ${subGen == null ? "Error" : subGen!.buildVariant(index) ?? 'out of range'}'),
-                  );
-                },
+              child: Hero(
+                tag: 'GenTexts',
+                child: Material(
+                  child: ListView.builder(
+                    itemCount: subGen == null ? 1 : subGen!.getDepth(),
+                    itemBuilder: (context, index) {
+                      if (subGen == null) return const Text("No valid Input");
+                      return ListTile(
+                        title: SelectableText(
+                            '${index + 1}: ${subGen == null ? "Error" : subGen!.buildVariant(index) ?? 'out of range'}'),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],
@@ -110,34 +132,42 @@ class GenPath extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (gen == null || sub == null || gen == sub) {
-      return const Icon(Icons.home, color: Colors.green);
-    }
     final path = <Widget>[];
+    if (gen == null || sub == null || gen == sub) {
+      path.add(
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.home, color: Colors.green),
+        ),
+      );
+    } else {
+      final genPath = gen!.getPathToUuid(sub!.uuid);
 
-    print(gen);
-    final genPath = gen!.getPathToUuid(sub!.uuid);
+      if (genPath == null) return const Text("No path found");
 
-    if (genPath == null) return const Text("No path found");
+      for (final part in genPath) {
+        if (path.isNotEmpty) {
+          path.add(const Icon(Icons.arrow_right));
 
-    for (final part in genPath) {
-      if (path.isNotEmpty) {
-        path.add(const Icon(Icons.arrow_right));
+          String type = 'unknown';
 
-        String type = 'unknown';
+          if (part is Random) type = 'Random';
+          if (part is Capsule) type = 'Capsule';
+          if (part is Txt) type = 'Word';
 
-        if (part is Random) type = 'Random';
-        if (part is Capsule) type = 'Capsule';
-        if (part is Txt) type = 'Word';
-
-        path.add(MaterialButton(
-          onPressed: () => part == sub ? null : navigateTo(part),
-          child: Text(type),
-          color: part == sub ? Colors.green : null,
-        ));
-      } else {
-        path.add(IconButton(
-            onPressed: () => navigateTo(gen!), icon: const Icon(Icons.home)));
+          path.add(MaterialButton(
+            onPressed: () => part == sub ? null : navigateTo(part),
+            child: Text(type),
+            color: part == sub ? Colors.green : null,
+          ));
+        } else {
+          path.add(
+            IconButton(
+              onPressed: () => navigateTo(gen!),
+              icon: const Icon(Icons.home),
+            ),
+          );
+        }
       }
     }
 
